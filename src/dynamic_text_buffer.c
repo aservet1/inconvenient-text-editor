@@ -139,8 +139,8 @@ next_line(char* line_buf, char* buf) {
 }
 
 void
-load_file(DynamicTextBuffer* txt, const char* filename) {
-	FILE* fp = fopen(filename, "r");
+load_file(DynamicTextBuffer* txt, const char* filepath) {
+	FILE* fp = fopen(filepath, "r");
 	char c;
 	fseek(fp, 0L, SEEK_END);
 	size_t nbytes = ftell(fp);
@@ -172,4 +172,21 @@ load_file(DynamicTextBuffer* txt, const char* filename) {
 		}
 	}
 	fclose(fp);
+}
+
+void
+dump_file(DynamicTextBuffer* txt, const char* filepath) {
+	FILE* fp = 
+		(filepath != NULL)
+		? fopen(filepath, "w")
+		: NULL ;
+	
+
+	for (int i = 0; i < txt->used; i++) {
+		fprintf(fp ? fp : stdout, "%s\n", txt->lines[i]);
+	}
+
+	if (filepath != NULL) {
+		fclose(fp);
+	}
 }

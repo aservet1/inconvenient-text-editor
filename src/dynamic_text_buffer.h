@@ -15,6 +15,7 @@ void flush(DynamicTextBuffer* txt) ;
 void insert_line(DynamicTextBuffer* txt, char* line, int n) ;
 void append_line(DynamicTextBuffer* txt, char* line) ;
 void show_numbered(DynamicTextBuffer* txt) ;
-void load_file(DynamicTextBuffer* txt, const char* filename) ;
+void load_file(DynamicTextBuffer* txt, const char* filepath) ;
+void dump_file(DynamicTextBuffer* txt, const char* filepath) ;
 
 #endif // DYNAMIC_TEXT_BUFFER_H
