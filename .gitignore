@@ -1,3 +1,5 @@
 # compilation byproducts
 text-editor
 *.o
+
+*.swp
