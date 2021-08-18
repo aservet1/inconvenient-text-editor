@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "panic.h"
+#include "colors.h"
 #include "dynamic_text_buffer.h"
 
 static void

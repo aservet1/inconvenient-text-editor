@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "dynamic_text_buffer.h"
+#include "colors.h"
 
 int main(int argc, const char* argv[]) {
 
@@ -30,7 +31,7 @@ int main(int argc, const char* argv[]) {
 	show_numbered( main_txt); printf("\n");
 	int N;
 	fscanf(stdin, "%d", &N);
-	insert_line( main_txt, "hello", N);
+	insert_line( main_txt, GRN"hello"RESET, N);
 	printf(" ----\n");
 	show_numbered( main_txt); printf("\n");
 
