@@ -1,0 +1,101 @@
+Make a text editor: a shell prompt with a text buffer in memory as the file contents.
+
+visual command interface:
+	commands to alter the text buffer
+	command to print out the text buffer
+	command to print out the text buffer with lines
+	command to print out all lines matching a regular expression
+	command to delete a line
+	command to to a regex substitution on a line to edit it
+		just the first match on the line
+		all matches on the line
+		a range of the matches on the line
+		individualy picked by index matches on the line
+	command to print a given line (given by line number as index) with the index of each character in a parallel array (make sure output is formatter)
+	command to troll text a given line
+		see if you can make this take in the ```stdin``` of one of the previous commands (instead of printing the text buffer to the screen, copy it as the parameter to this command)
+		oh that would just like print( trolltext( select_line_number(12) ))
+			dude is this just functional programming?
+				not functional programming because you cant do variables conditionals OR loops, but it's a way of compounding predefined programs on top of each other
+
+data structure:
+	an array of strings
+	^seriously thats it
+	for now just make it so that it's newline-separated
+
+command syntax:
+	command: args | command'('args')' ;
+	args: atom | atom ',' args ;
+	atom: string|number;
+	string: '"'nostringatom'"';
+	nostringatom: number|(~/"[^"]*"/)
+	number: int|partial
+	partial: float|double
+	float: <to be implemented, i dont care right now>
+	double: []
+
+command parser:
+	command(tokens):
+		token_num, lookahead, tokens = tokens[0]+1 tokens[1], tokens[1:]
+		-- check(token):
+			return lookahead == item
+		-- match(token):
+			lookahead == item || panic("unexpected token number \'{}\': \'{}\'\n - expected value: \'{}\'".format(token_num, item, lookahead))
+
+
+what language should i implement this shell in
+- C
+- Python
+- Python with all of the functions defined in C
+	- Python would read in all the C functions as a module
+		- hopefully a `load functions from C that you can call right out of the box from python` option will be good
+	  ^and then store the function definitions in a dictionary
+	  ^and apply the functions (with their arguments!!) to one another
+	- Pretty much Python reads the commands, implements the parser (this will be simpler than the C myshell parser, it'll just be ``struct cmd; struct atomcmd; struct nestedcmd`` but in Python)
+
+
+Living in the native implementation
+	Read file into a native data structure.
+		static char[MAX_LINES][MAX_LINE_LENGTH] text_buffer; // make sure you put the row and the column values in the right place
+
+		<code language="C">
+			typedef struct DynamicTextBuffer { // a dynamic text buffer is a struct with a dynamically resizing array of lines
+				int used;
+				int capacity;
+				char** lines;
+			} DynamicTextBuffer;
+
+			typedef struct LineList {
+				int 
+			} LineList;
+
+			insert_line(DynamicTextBuffer t, char* line, int n) {
+				assert(n <= 0 && "you asked to insert the line at a negative index");
+				assert(n < t.used && "you asked to insert a line beyond the bounds of the array");
+				if (txt.used == txt.capacity) {
+					txt.capacity *= 2
+					txt.lines = realloc (
+						txt.lines,
+						sizeof(char*) * txt.capacity
+					);
+				} elif (txt.used > txt.capacity) {
+					panic("lines used greater than capacity: %d/%d", txt.num_lines_used. txt.capacity);
+				} else {
+					char* copy_line = malloc(sizeof(char*)*(strlen(line)+1));
+					strcpy(from=line, to=copy_line); // make sure you know which position is for which parameter
+					txt.lines[txt.used++] = copy_line;
+				}
+			}
+			delete_line(DynamicTextBuffer txt, int n) {
+
+			}
+
+		</code>
+
+
+
+
+
+
+
+
