@@ -21,5 +21,4 @@
 #define B_CYN   "\x1B[1;36m"
 #define B_WHT   "\x1B[1;37m"
 
-
 #endif //COLORS_H
