@@ -86,10 +86,12 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 		show_numbered(txt, start, stop);
 	} else if (streq(cmd.verb,"insert")) {
 		char line[BUFSIZ], line_number_buf[BUFSIZ];
-		int line_number;
 		first_rest(cmd.args,line_number_buf,line);
-		sscanf(line_number_buf,"%d",&line_number);
+		int line_number = atoi(line_number_buf);
+		// TODO do the version of atoi that responds to invalid number input
 		insert_line(txt,line_number,line);
+	} else if (streq(cmd.verb,"append")) {
+		append_line(txt, cmd.args);
 	}
 }
 
