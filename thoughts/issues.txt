@@ -5,3 +5,5 @@
 		but if it doesn't come up that was probably the
 		source of this bug and you can take this one off
 		of the list
+- panicing on typical user errors is annoying. report the error,
+	leave the state unchanged, and go back to the command prompt
