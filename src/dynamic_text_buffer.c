@@ -130,7 +130,24 @@ append_line(DynamicTextBuffer* txt, char* line) {
 
 void
 delete_line(DynamicTextBuffer* txt, int n) {
-	if (n > -1 || n < txt->used) panic("index out of bounds error: %d", n);
+	if (n < 0 || n >= txt->used) panic("index out of bounds error: %d", n);
+
+	free(txt->lines[n]);
+	for(int i = n; i < txt->used; i++) {
+		txt->lines[i] = txt->lines[i+1];
+	} txt->used--;
+}
+
+// this can be more efficient. right now its quadratic time complexity (order of range*n), could be linear (order of N)
+void
+delete_range(DynamicTextBuffer* txt, int start, int stop) {
+//	int n = stop-start;
+//	int i;
+//	for(i=0;i<=n;i++) free(txt->lines[i+start]);
+//	for(i=start;i<txt->used;i++) txt->lines[i] = txt->lines[i+n];
+//	txt->used -= n;
+	for (int i = start; i <= stop; i++)
+		delete_line(txt,start);
 }
 
 void show_numbered(DynamicTextBuffer* txt, int start, int stop) {

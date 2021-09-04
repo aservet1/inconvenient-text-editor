@@ -97,6 +97,13 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 		first_rest(cmd.args,line_number_buf,line);
 		int line_number = atoi(line_number_buf); // TODO do the version of atoi that responds to invalid number input
 		replace_line(txt, line_number, line);
+	} else if (streq(cmd.verb,"delete")) {
+		int line_number = atoi(cmd.args); // TODO do the version of atoi that responds to invalid number input
+		delete_line(txt, line_number);
+	} else if (streq(cmd.verb,"deleterange")) {
+		int start, stop;
+		sscanf(cmd.args,"%d-%d",&start,&stop);
+		delete_range(txt,start,stop);
 	}
 }
 
