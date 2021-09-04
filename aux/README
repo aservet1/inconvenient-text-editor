@@ -1,0 +1,10 @@
+sample code that i've used for prototyping or something like that
+
+in all likelihood the current working codebase has evolved to be incompatible,
+so dont take for granted that this will work at all with any existing code in
+src/ directory or that external functions called still work the same / have
+the same interface / are even intended for the same purposes
+
+im entirely just keeping this around for reference / ideas / to reuse or repourpose.
+i put a good amount of brain work into it, so it'll probably be useful in the
+future and i don't want to throw it away, unless i'm sure it's better off scrapped.
