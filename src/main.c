@@ -67,6 +67,15 @@ char* strip(char* buf) {
 }
 
 void
+first_rest(char* src, char* first, char* rest) {
+	src = strip(src);
+	sscanf(src,"%s",first);
+	int offset = strlen(first)+1;
+	int i; for (i=0; src[i+offset]; i++) rest[i]=src[i+offset];
+	rest[i]='\0';
+}
+
+void
 eval(cmd_t cmd, DynamicTextBuffer* txt) {
 	if (streq(cmd.verb,"show")){
 		int start, stop;
@@ -76,9 +85,10 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 			sscanf(cmd.args,"%d %d",&start,&stop);
 		show_numbered(txt, start, stop);
 	} else if (streq(cmd.verb,"insert")) {
-		char line[BUFSIZ];
+		char line[BUFSIZ], line_number_buf[BUFSIZ];
 		int line_number;
-		sscanf(cmd.args,"%d %s",&line_number,line);
+		first_rest(cmd.args,line_number_buf,line);
+		sscanf(line_number_buf,"%d",&line_number);
 		insert_line(txt,line_number,line);
 	}
 }
@@ -91,17 +101,7 @@ prompt() {
 cmd_t
 parsecmd(char* input) {
 	cmd_t cmd;
-
-	input = strip(input);
-	sscanf(input, "%s", cmd.verb);
-	int offset = strlen(cmd.verb)+1;
-
-	int i;
-	for (i = 0; input[i+offset] != '\0'; i++) {
-		cmd.args[i] = input[i+offset];
-	}
-	cmd.args[i] = '\0';
-
+	first_rest(input,cmd.verb,cmd.args);
 	return cmd;
 }
 
