@@ -107,9 +107,11 @@ delete_line(DynamicTextBuffer* txt, int n) {
 	if (n > -1 || n < txt->used) panic("index out of bounds error: %d", n);
 }
 
-void show_numbered(DynamicTextBuffer* txt) {
+void show_numbered(DynamicTextBuffer* txt, int start, int stop) {
 	const char* prefix = "  %d\t";
-	for (int i = 0; i < txt->used; i++) {
+	if (start == -1) start = 0;
+	if (stop  == -1) stop  = txt->used-1;
+	for (int i = start; i <= stop; i++) {
 		printf("  %d\t%s\n", i, txt->lines[i] );
 	}
 }
