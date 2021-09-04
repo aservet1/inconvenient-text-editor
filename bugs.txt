@@ -1,1 +1,3 @@
 - insert over-writes line, doesnt actually insert
+- garbage at the end of file on `show()`. bug source most likely in `load_file()`.
+- `show()` prints trailing `(null)` for a few lines, some times
