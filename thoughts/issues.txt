@@ -1,3 +1,7 @@
 - reading into a dynamic text buffer with `load_file(char* filepath)` also loads on some garbage lines/characters
-- insert over-writes line, doesnt actually insert
 - `show()` prints trailing `(null)` for a few lines, some times
+	- i think this was from insert not actually inserting
+		but still increasing txt->used. look out for this,
+		but if it doesn't come up that was probably the
+		source of this bug and you can take this one off
+		of the list

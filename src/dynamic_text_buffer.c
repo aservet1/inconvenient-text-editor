@@ -75,6 +75,8 @@ void
 insert_line(DynamicTextBuffer* txt, int n, char* line) {
 	assert(n >= 0 && "you asked to insert the line at a negative index");
 	assert(n <= txt->used && "you asked to insert a line beyond the bounds of the array");
+
+	// expand max lines if necessary
 	if (txt->used == txt->capacity) {
 		txt->capacity *= 2 ;
 		txt->lines = realloc (
@@ -83,11 +85,15 @@ insert_line(DynamicTextBuffer* txt, int n, char* line) {
 		);
 	} else if (txt->used > txt->capacity) {
 		panic (
-			"lines used greater than capacity: %d/%ld",
+			"idk why this would ever happen but txt->used > txt->capacity: %d/%ld",
 			txt->used, txt->capacity
 		);
 	}
+
 	// shift aside a spot
+	for(int i = txt->used; i > n; i--) {
+		txt->lines[i] = txt->lines[i-1];
+	}
 
 	// insert at spot
 	char* copy_line = malloc(sizeof(char*)*(strlen(line)+1));
@@ -111,6 +117,7 @@ void show_numbered(DynamicTextBuffer* txt, int start, int stop) {
 	const char* prefix = "  %d\t";
 	if (start == -1) start = 0;
 	if (stop  == -1) stop  = txt->used-1;
+	if (stop > txt->used-1) stop = txt->used-1;
 	for (int i = start; i <= stop; i++) {
 		printf("  %d\t%s\n", i, txt->lines[i] );
 	}
