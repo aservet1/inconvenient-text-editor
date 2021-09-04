@@ -13,6 +13,7 @@ DynamicTextBuffer* mallocDynamicTextBuffer(size_t capacity);
 void freeDynamicTextBuffer(DynamicTextBuffer* txt) ;
 void flush(DynamicTextBuffer* txt) ;
 void insert_line(DynamicTextBuffer* txt, int n, char* line) ;
+void replace_line(DynamicTextBuffer* txt, int n, char* line) ;
 void append_line(DynamicTextBuffer* txt, char* line) ;
 void show_numbered(DynamicTextBuffer* txt, int start, int stop) ;
 void load_file(DynamicTextBuffer* txt, const char* filepath) ;

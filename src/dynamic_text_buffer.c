@@ -71,12 +71,8 @@ flush(DynamicTextBuffer* txt) {
 	txt->used = 0;
 }
 
-void
-insert_line(DynamicTextBuffer* txt, int n, char* line) {
-	assert(n >= 0 && "you asked to insert the line at a negative index");
-	assert(n <= txt->used && "you asked to insert a line beyond the bounds of the array");
-
-	// expand max lines if necessary
+static void
+expand_capacity_if_necessary(DynamicTextBuffer* txt) {
 	if (txt->used == txt->capacity) {
 		txt->capacity *= 2 ;
 		txt->lines = realloc (
@@ -89,18 +85,42 @@ insert_line(DynamicTextBuffer* txt, int n, char* line) {
 			txt->used, txt->capacity
 		);
 	}
+}
 
-	// shift aside a spot
+static void
+put_line(DynamicTextBuffer* txt, int n, char* line) {
+	char* heap_allocated_line = malloc(sizeof(char*)*(strlen(line)+1));
+	strcpy(heap_allocated_line, line);
+	txt->lines[n] = heap_allocated_line;
+}
+
+/*void
+check_bounds(DynamicTextBuffer* txt, int n) {
+	if (n < 0 || n > txt->)
+}*/
+
+void
+insert_line(DynamicTextBuffer* txt, int n, char* line) {
+	assert(n >= 0 && "you asked to insert the line at a negative index");
+	assert(n <= txt->used && "you asked to insert a line beyond the bounds of the array");
+
+	expand_capacity_if_necessary(txt);
+
 	for(int i = txt->used; i > n; i--) {
 		txt->lines[i] = txt->lines[i-1];
 	}
 
-	// insert at spot
-	char* copy_line = malloc(sizeof(char*)*(strlen(line)+1));
-	strcpy(copy_line, line);
-	txt->lines[n] = copy_line;
-
+	put_line(txt,n,line);
 	txt->used += 1;
+}
+
+void
+replace_line(DynamicTextBuffer* txt, int n, char* line) {
+	assert(n >= 0 && "you asked to replace a line at a negative index");
+	assert(n <= txt->used && "you asked to replace a line beyond the bounds of the array");
+
+	free(txt->lines[n]);
+	put_line(txt,n,line);
 }
 
 void

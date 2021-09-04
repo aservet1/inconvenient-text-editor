@@ -87,11 +87,16 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 	} else if (streq(cmd.verb,"insert")) {
 		char line[BUFSIZ], line_number_buf[BUFSIZ];
 		first_rest(cmd.args,line_number_buf,line);
-		int line_number = atoi(line_number_buf);
-		// TODO do the version of atoi that responds to invalid number input
+		int line_number = atoi(line_number_buf); // TODO do the version of atoi that responds to invalid number input
 		insert_line(txt,line_number,line);
 	} else if (streq(cmd.verb,"append")) {
-		append_line(txt, cmd.args);
+		char line[BUFSIZ]; strcpy(line,cmd.args);
+		append_line(txt, line);
+	} else if (streq(cmd.verb,"replace")) {
+		char line[BUFSIZ], line_number_buf[BUFSIZ];
+		first_rest(cmd.args,line_number_buf,line);
+		int line_number = atoi(line_number_buf); // TODO do the version of atoi that responds to invalid number input
+		replace_line(txt, line_number, line);
 	}
 }
 
