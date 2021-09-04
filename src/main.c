@@ -106,20 +106,24 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 		delete_range(txt,start,stop);
 	} else if (streq(cmd.verb,"save")) {
 		char path[BUFSIZ]; strcpy(path,cmd.args);
-		if (!strlen(path)) printf("no save path provided\n");
+		if (!strlen(path)) printf(GRN"no save path provided\n"RESET);
 		else dump_file(txt, path);
 	} else if (streq(cmd.verb,"load")) {
 		char path[BUFSIZ]; strcpy(path,cmd.args);
-		if (!strlen(path)) printf("no load path provided\n");
+		if (!strlen(path)) printf(GRN"no load path provided\n"RESET);
 		else load_file(txt,path);
 	} else if (streq(cmd.verb,"flush")) {
 		flush(txt);
+	}
+
+	else {
+		printf(GRN"command not recognized:"RESET" %s %s\n", cmd.verb, cmd.args);
 	}
 }
 
 void
 prompt() {
-	printf(GRN"editorcmd>> "RESET);
+	printf(BLU"editorcmd>> "RESET);
 }
 
 cmd_t
