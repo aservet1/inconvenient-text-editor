@@ -70,14 +70,17 @@ void
 eval(cmd_t cmd, DynamicTextBuffer* txt) {
 	if (streq(cmd.verb,"show")){
 		int start, stop;
-		if (streq(cmd.args,"all")) start = stop = -1;
-		else sscanf(cmd.args,"%d %d",&start,&stop);
+		if (streq(cmd.args,"all") || strlen(cmd.args)==0 )
+			start = stop = -1;
+		else
+			sscanf(cmd.args,"%d %d",&start,&stop);
 		show_numbered(txt, start, stop);
-	} /*else if (streq(cmd.cmd,"insert")) {
-		char buf[BUFSIZ];
-		sscanf(cmd.arg,"%s %d",buf,)
-		insert_line(txt,);
-	}*/
+	} else if (streq(cmd.verb,"insert")) {
+		char line[BUFSIZ];
+		int line_number;
+		sscanf(cmd.args,"%d %s",&line_number,line);
+		insert_line(txt,line_number,line);
+	}
 }
 
 void

@@ -72,7 +72,7 @@ flush(DynamicTextBuffer* txt) {
 }
 
 void
-insert_line(DynamicTextBuffer* txt, char* line, int n) {
+insert_line(DynamicTextBuffer* txt, int n, char* line) {
 	assert(n >= 0 && "you asked to insert the line at a negative index");
 	assert(n <= txt->used && "you asked to insert a line beyond the bounds of the array");
 	if (txt->used == txt->capacity) {
@@ -99,7 +99,7 @@ insert_line(DynamicTextBuffer* txt, char* line, int n) {
 
 void
 append_line(DynamicTextBuffer* txt, char* line) {
-	insert_line(txt, line, txt->used);
+	insert_line(txt, txt->used, line);
 }
 
 void
