@@ -5,12 +5,22 @@
 #include "dynamic_text_buffer.h"
 #include "colors.h"
 
-struct cmd {
-	char cmd[BUFSIZ];
-	char arg[BUFSIZ];
-};
+#define streq(s1,s2) !strcmp(s1,s2)
 
-char* gets(char *buf, int max) {
+typedef struct cmd_t {
+	char verb[BUFSIZ];
+	char args[BUFSIZ];
+} cmd_t;
+
+static char* whitespace = " \n";
+
+void
+print_command(cmd_t cmd) {
+	printf("verb: '%s'\nargs: '%s'\n", cmd.verb, cmd.args);
+}
+
+char*
+gets(char *buf, int max) {
 	int i, cc;
 	char c;
 	
@@ -26,14 +36,15 @@ char* gets(char *buf, int max) {
 	return buf;
 }
 
-int is_in(char c, char* str) {
+int
+is_in(char c, char* str) {
 	for(int i = 0; i < strlen(str); i++)
 		if (c == str[i]) return 1;
 	return 0;
 }
 
-static char* whitespace = " \n";
-int iswhitespace(char c) {
+int
+iswhitespace(char c) {
 	return is_in(c,whitespace);
 }
 
@@ -41,41 +52,57 @@ char* strip(char* buf) {
 	int i;
 	i=strlen(buf)-1;
 	while (1) {
-		if (i == 0) break;
+		if (i == -1) break;
 		if (!iswhitespace(buf[i])) break;
 		i--;
 	}
 	buf[++i] = '\0';
-	for(i=0;iswhitespace(buf[i]);i++,buf++);
+	while(1) {
+		if (
+			!iswhitespace(*buf)
+		) break;
+		buf++;
+	}
 	return buf;
 }
 
-#define streq(s1,s2) !strcmp(s1,s2)
-void evaluate(struct cmd cmd, DynamicTextBuffer* txt) {
-	if (streq(cmd.cmd,"show")){
-
-		if (streq(cmd.arg,"all")) {
-			show_numbered(txt,-1,-1);
-		} else {
-			int start, stop;
-			sscanf(cmd.arg,"%d-%d",&start,&stop);
-			show_numbered(txt, start, stop);
-		}
-
-	}
+void
+eval(cmd_t cmd, DynamicTextBuffer* txt) {
+	if (streq(cmd.verb,"show")){
+		int start, stop;
+		if (streq(cmd.args,"all")) start = stop = -1;
+		else sscanf(cmd.args,"%d %d",&start,&stop);
+		show_numbered(txt, start, stop);
+	} /*else if (streq(cmd.cmd,"insert")) {
+		char buf[BUFSIZ];
+		sscanf(cmd.arg,"%s %d",buf,)
+		insert_line(txt,);
+	}*/
 }
 
-void prompt() {
+void
+prompt() {
 	printf(GRN"editorcmd>> "RESET);
 }
 
-struct cmd parsecmd(char* input) {
-	struct cmd cmd;
-	sscanf(input, "%s %s", cmd.cmd, cmd.arg);
+cmd_t
+parsecmd(char* input) {
+	cmd_t cmd;
+
+	input = strip(input);
+	sscanf(input, "%s", cmd.verb);
+	int offset = strlen(cmd.verb)+1;
+
+	int i;
+	for (i = 0; input[i+offset] != '\0'; i++) {
+		cmd.args[i] = input[i+offset];
+	}
+	cmd.args[i] = '\0';
+
 	return cmd;
 }
 
-void REPL(DynamicTextBuffer* main_txt) {
+void repl(DynamicTextBuffer* main_txt) {
 	setbuf(stdout,NULL);
 	char* input = malloc(BUFSIZ*sizeof(char));
 	while(1) {
@@ -83,7 +110,7 @@ void REPL(DynamicTextBuffer* main_txt) {
 		input = strip(input);
 		if (streq(input,"exit"))
 			break;
-		evaluate(parsecmd(input), main_txt);
+		eval(parsecmd(input), main_txt);
 	}
 	free(input);
 }
@@ -105,7 +132,7 @@ int main(int argc, const char* argv[]) {
 	main_txt = mallocDynamicTextBuffer(64);
 	load_file(main_txt, inpath);
 
-	REPL(main_txt);
+	repl(main_txt);
 
 	freeDynamicTextBuffer(main_txt);
 	main_txt = NULL;
