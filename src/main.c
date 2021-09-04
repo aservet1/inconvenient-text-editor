@@ -115,11 +115,15 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 	} else if (streq(cmd.verb,"flush")) {
 		flush(txt);
 	}
+
+	else {
+		printf(GRN"command not recognized:"RESET" %s %s\n", cmd.verb, cmd.args);
+	}
 }
 
 void
 prompt() {
-	printf(GRN"editorcmd>> "RESET);
+	printf(BLU"editorcmd>> "RESET);
 }
 
 cmd_t
