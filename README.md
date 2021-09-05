@@ -2,7 +2,7 @@
 
 Basic old school text editor. Loads file into a background text buffer, view and manipulate it through a command prompt.
 
-## Ok but why??
+## Ok but why though
 
 Is this immediately useful for people to efficiently edit their text? Nope. It's an educational tool, for me mostly. It's cool to understand
 the concepts that go in to editing text, and building an application for that quite literally from the ground up. No external libraries, just
