@@ -114,8 +114,22 @@ eval(cmd_t cmd, DynamicTextBuffer* txt) {
 		else load_file(txt,path);
 	} else if (streq(cmd.verb,"flush")) {
 		flush(txt);
+	} else if (streq(cmd.verb,"help")) {
+		printf (
+			"available commands:"
+			"\n    - show         <start line number> <stop line number> | all | (empty)"
+			"\n    - insert       <line number> <text>"
+			"\n    - append       <text>"
+			"\n    - replace      <line number> <text>"
+			"\n    - delete       <line number>"
+			"\n    - deleterange  <start line number> <stop line number>"
+			"\n    - save         <file name>"
+			"\n    - load         <file name>"
+			"\n    - flush        (empty)"
+			"\n    - info         (empty)"
+			"\n"
+		);
 	}
-
 	else {
 		printf(GRN"command not recognized:"RESET" %s %s\n", cmd.verb, cmd.args);
 	}
