@@ -153,9 +153,8 @@ parsecmd(char* input) {
 void
 repl(DynamicTextBuffer* main_txt) {
 	setbuf(stdout,NULL);
-	char*
-		input,
-		input_alloc =
+	char* input;
+	char* input_alloc =
 			malloc(
 				BUFSIZ*sizeof(char)
 			)
