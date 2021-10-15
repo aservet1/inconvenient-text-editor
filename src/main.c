@@ -52,18 +52,21 @@ char* strip(char* buf) {
 	int i;
 	i=strlen(buf)-1;
 	while (1) {
-		if (i == -1) break;
-		if (!iswhitespace(buf[i])) break;
+		if (
+			i == -1 ||
+			!iswhitespace(buf[i])
+		) break;
 		i--;
 	}
 	buf[++i] = '\0';
+	i=0;
 	while(1) {
 		if (
-			!iswhitespace(*buf)
+			!iswhitespace(buf[i])
 		) break;
-		buf++;
+		i++;
 	}
-	return buf;
+	return buf + i;
 }
 
 void
@@ -147,20 +150,38 @@ parsecmd(char* input) {
 	return cmd;
 }
 
-void repl(DynamicTextBuffer* main_txt) {
+void
+repl(DynamicTextBuffer* main_txt) {
 	setbuf(stdout,NULL);
-	char* input = malloc(BUFSIZ*sizeof(char));
+	char*
+		input,
+		input_alloc =
+			malloc(
+				BUFSIZ*sizeof(char)
+			)
+		;
+
 	while(1) {
-		prompt(); gets(input, BUFSIZ);
-		input = strip(input);
-		if (streq(input,"exit"))
-			break;
-		eval(parsecmd(input), main_txt);
-	}
-	free(input);
+		prompt ( );
+		gets(
+		  input_alloc,
+		  BUFSIZ
+		  )
+		;
+		input = strip(input_alloc);
+		if (
+		  streq(input,"exit")
+		)
+		  break;
+		eval(
+		  parsecmd(input),
+		  main_txt
+		);
+	} free(input_alloc);
 }
 
-int main(int argc, const char* argv[]) {
+int
+main(int argc, const char* argv[]) {
 
 	if (argc != 2) {
 		fprintf (
@@ -184,4 +205,3 @@ int main(int argc, const char* argv[]) {
 
 	return 0;
 }
-
